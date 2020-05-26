@@ -1,5 +1,5 @@
 import tables
 import morphic
 
-print "duane"
-print "was"
+print("duane")
+print("was")

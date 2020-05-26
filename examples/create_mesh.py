@@ -51,21 +51,21 @@ pi = scipy.pi
 mesh = morphic.Mesh()
 
 # Add nodes
-mesh.add_stdnode(1, [0, 0, 0])
-mesh.add_stdnode(2, [1, 0, 0])
-mesh.add_stdnode(3, [2, 0, 0])
-mesh.add_stdnode(4, [3, 0, 0])
-mesh.add_stdnode(5, [4, 0, 0])
-mesh.add_stdnode(6, [0, 1, 0])
-mesh.add_stdnode(7, [1, 1, 1])
-mesh.add_stdnode(8, [2, 1, 0])
-mesh.add_stdnode(9, [3, 1, -1])
-mesh.add_stdnode(10, [4, 1, 0])
-mesh.add_stdnode(11, [0, 2, 0])
-mesh.add_stdnode(12, [1, 2, 0])
-mesh.add_stdnode(13, [2, 2, 0])
-mesh.add_stdnode(14, [3, 2, 0])
-mesh.add_stdnode(15, [4, 2, 0])
+mesh.add_stdnode(1, [0, 0, 0], group='_default')
+mesh.add_stdnode(2, [1, 0, 0], group='_default')
+mesh.add_stdnode(3, [2, 0, 0], group='_default')
+mesh.add_stdnode(4, [3, 0, 0], group='_default')
+mesh.add_stdnode(5, [4, 0, 0], group='_default')
+mesh.add_stdnode(6, [0, 1, 0], group='_default')
+mesh.add_stdnode(7, [1, 1, 1], group='_default')
+mesh.add_stdnode(8, [2, 1, 0], group='_default')
+mesh.add_stdnode(9, [3, 1, -1], group='_default')
+mesh.add_stdnode(10, [4, 1, 0], group='_default')
+mesh.add_stdnode(11, [0, 2, 0], group='_default')
+mesh.add_stdnode(12, [1, 2, 0], group='_default')
+mesh.add_stdnode(13, [2, 2, 0], group='_default')
+mesh.add_stdnode(14, [3, 2, 0], group='_default')
+mesh.add_stdnode(15, [4, 2, 0], group='_default')
 
 # Add elements
 mesh.add_element(1, ['L2', 'L2'], [1, 2, 3, 6, 7, 8, 11, 12, 13])
@@ -73,6 +73,8 @@ mesh.add_element(2, ['L2', 'L2'], [3, 4, 5, 8, 9, 10, 13, 14, 15])
 
 # Generate the mesh
 mesh.generate()
+
+mesh.elements[1].evaluate([0.5,0.5])
 
 # Plotting
 if action in ['update', 'plot']:

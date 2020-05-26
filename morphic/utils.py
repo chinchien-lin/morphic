@@ -1,3 +1,4 @@
+import os
 import numpy
 import morphic
 class PCAMesh(object):
@@ -201,7 +202,20 @@ def convert_hermite_lagrange(cHmesh, tol=1e-9):
     mesh.generate()
     
     return mesh
-    
+
+def export_json(array):
+    import json
+
+    def default(obj):
+        if type(obj).__module__ == numpy.__name__:
+            if isinstance(obj, numpy.ndarray):
+                return obj.tolist()
+            else:
+                return obj.item()
+        raise TypeError('Unknown type:', type(obj))
+
+    return json.dumps(array, default=default)
+
     
 #################
 ### GEOMETRIC ###
@@ -233,4 +247,8 @@ def normal(v1, v2, normalize=False):
     Calculates the normal of two vectors and normalizes if normalize=True
     """
     pass
-    
+
+def bytes_to_str(value):
+    if type(value) is bytes:
+        value = value.decode('utf-8')
+    return value

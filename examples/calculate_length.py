@@ -37,9 +37,9 @@ mesh.add_element(2, ['L2'], [1, 3, 4])
 mesh.add_element(3, ['L3'], [1, 2, 3, 4])
 mesh.generate()
 
-print 'L1: %7.4f %7.4f' % (integrate_length(mesh, 1), mesh.elements[1].length())
-print 'L2: %7.4f %7.4f' % (integrate_length(mesh, 2), mesh.elements[2].length())
-print 'L3: %7.4f %7.4f' % (integrate_length(mesh, 3), mesh.elements[3].length())
+print('L1: %7.4f %7.4f' % (integrate_length(mesh, 1), mesh.elements[1].length()))
+print('L2: %7.4f %7.4f' % (integrate_length(mesh, 2), mesh.elements[2].length()))
+print('L3: %7.4f %7.4f' % (integrate_length(mesh, 3), mesh.elements[3].length()))
 
 x1 = numpy.array([
     mesh.elements[3].evaluate([0]), mesh.elements[3].evaluate([0], deriv=[1])]).T
@@ -51,7 +51,7 @@ meshH3.add_stdnode(1, x1)
 meshH3.add_stdnode(2, x2)
 meshH3.add_element(1, ['H3'], [1, 2])
 meshH3.generate()
-print 'H3: %7.4f %7.4f' % (integrate_length(meshH3, 1), meshH3.elements[1].length())
+print('H3: %7.4f %7.4f' % (integrate_length(meshH3, 1), meshH3.elements[1].length()))
 
 
 

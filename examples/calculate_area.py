@@ -51,18 +51,18 @@ mesh.add_stdnode(3, [[0.0, 1.1, 0, 0], [1.0, 0.1, 0.9, 0]])
 mesh.add_stdnode(4, [[0.9, 0.9, 0, 0], [0.9, -0.1, 0.8, 0]])
 mesh.add_element(1, ['H3', 'H3'], [1, 2, 3, 4])
 mesh.generate()
-print 'H3: %7.4f %7.4f' % (area(mesh, 1), mesh.elements[1].area())
+print('H3: %7.4f %7.4f' % (area(mesh, 1), mesh.elements[1].area()))
 
 lmesh = generate_lagrange_mesh(mesh, 1)
-print 'L1: %7.4f %7.4f' % (area(lmesh, 1), lmesh.elements[1].area())
+print('L1: %7.4f %7.4f' % (area(lmesh, 1), lmesh.elements[1].area()))
 
 lmesh = generate_lagrange_mesh(mesh, 2)
-print 'L2: %7.4f %7.4f' % (area(lmesh, 1), lmesh.elements[1].area())
+print('L2: %7.4f %7.4f' % (area(lmesh, 1), lmesh.elements[1].area()))
 
 lmesh = generate_lagrange_mesh(mesh, 3)
-print 'L3: %7.4f %7.4f' % (area(lmesh, 1), lmesh.elements[1].area())
+print('L3: %7.4f %7.4f' % (area(lmesh, 1), lmesh.elements[1].area()))
 
 lmesh = generate_lagrange_mesh(mesh, 4)
-print 'L4: %7.4f %7.4f' % (area(lmesh, 1), lmesh.elements[1].area())
+print('L4: %7.4f %7.4f' % (area(lmesh, 1), lmesh.elements[1].area()))
 
 

@@ -36,8 +36,8 @@ def generate():
     Xe = mesh.evaluate(1, S)
     dXe = mesh.evaluate(1, S, deriv=[1])
     # sphinx tag generate 5
-    print Xe
-    print dXe
+    print(Xe)
+    print(dXe)
     
     # Plot data
     # sphinx tag plotting 1

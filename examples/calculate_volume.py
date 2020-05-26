@@ -2,6 +2,7 @@ import pickle
 import scipy
 from scipy import linalg
 from scipy.spatial import cKDTree
+from importlib import reload
 
 import morphic
 reload(morphic)
@@ -69,16 +70,16 @@ def calc_volume(mesh):
     Xn = mesh.get_nodes()
     Xmin, Xmax =  Xn.min(0), Xn.max(0)
     dX = Xmax - Xmin
-    print dX
+    print(dX)
     N = 50
     Xi = morphic.utils.grid(N, 3)
     dv = (dX / N).prod()
     dlimit = (dX / N).max()
-    print dlimit, dv
+    print(dlimit, dv)
     X = Xmin + dX * Xi
     d, i = tree.query(X.tolist())
     ii = scipy.argwhere(d < dlimit)
-    print ii.shape[0] * dv, ii.shape, X.shape
+    print(ii.shape[0] * dv, ii.shape, X.shape)
 
 def calc_vol2(X, T):
     minz = X[:,2].min()
@@ -127,14 +128,14 @@ mesh.generate()
 
 V = mesh.elements[1].volume()
 # print 'Volume %8.0f %8.0f %8.0f' % (V - Vcm, V, Vcm)
-print 'Volume %8.0f' % (V)
+print('Volume %8.0f' % (V))
 #calc_volume(mesh)
 
 
 
 
 Xs, Ts = mesh.get_faces(40)
-print calc_vol2(Xs, Ts)
+print(calc_vol2(Xs, Ts))
 
 # Xn = mesh.get_nodes()
 
@@ -163,6 +164,6 @@ mesh.generate()
 
 V = mesh.elements[1].volume()
 # print 'Volume %8.0f %8.0f %8.0f' % (V - Vcm, V, Vcm)
-print 'Volume %8.0f' % (V)
+print('Volume %8.0f' % (V))
 X, T = mesh.get_faces(32)
-print calc_vol2(X, T)
+print(calc_vol2(X, T))
