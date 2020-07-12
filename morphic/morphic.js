@@ -221,16 +221,23 @@ Mesh.prototype.getNodeMaterialPoints = function(nodeId) {
     return materialPoints;
 };
 
-Mesh.prototype.getNodePositions = function() {
-    let nodePositions = [];
-    for (const [id, node] of Object.entries(this.nodes)) {
-      let nodePosition = new THREE.Vector3();
+Mesh.prototype.getNodePositions = function () {
+  let nodePositions = [];
+
+  for (const [id, node] of Object.entries(this.nodes)) {
+    let nodePosition = new THREE.Vector3();
+    if (Array.isArray(node.x[0])) {
       nodePosition.x = node.x[0][0];
       nodePosition.y = node.x[1][0];
       nodePosition.z = node.x[2][0];
-      nodePositions.push(nodePosition);
+    } else {
+      nodePosition.x = node.x[0];
+      nodePosition.y = node.x[1];
+      nodePosition.z = node.x[2];
     }
-    return nodePositions;
+    nodePositions.push(nodePosition);
+  }
+  return nodePositions;
 };
 
 Mesh.prototype.getNodeids = function() {
@@ -417,9 +424,15 @@ function updateGeometryFromMesh(geometry, mesh, resolution) {
 }
 
 function updateMesh(mesh, nodeId, nodePosition) {
-  mesh.nodes[parseInt(nodeId)].x[0][0] = nodePosition.x
-  mesh.nodes[parseInt(nodeId)].x[1][0] = nodePosition.y
-  mesh.nodes[parseInt(nodeId)].x[2][0] = nodePosition.z
+  if (Array.isArray(mesh.nodes[parseInt(nodeId)].x[0])) {
+    mesh.nodes[parseInt(nodeId)].x[0][0] = nodePosition.x
+    mesh.nodes[parseInt(nodeId)].x[1][0] = nodePosition.y
+    mesh.nodes[parseInt(nodeId)].x[2][0] = nodePosition.z
+  } else {
+    mesh.nodes[parseInt(nodeId)].x[0] = nodePosition.x
+    mesh.nodes[parseInt(nodeId)].x[1] = nodePosition.y
+    mesh.nodes[parseInt(nodeId)].x[2] = nodePosition.z
+  }
   return mesh
 }
 
@@ -566,8 +579,16 @@ function get2DTesselationWeights(res, basis) {
     var N1 = res[1] + 1;
     var div0 = 1. / res[0];
     var div1 = 1. / res[1];
-    var W0 = Array.apply(null, {length: N0}).map(Number.call, Number).map(function(a) {return div0 * a}).map(L1);
-    var W1 = Array.apply(null, {length: N1}).map(Number.call, Number).map(function(a) {return div1 * a}).map(L1);
+    if (basis === 'L1') {
+      var W0 = Array.apply(null, {length: N0}).map(Number.call, Number).map(function (a) {return div0 * a}).map(L1);
+      var W1 = Array.apply(null, {length: N1}).map(Number.call, Number).map(function (a) {return div1 * a}).map(L1);
+    }else if (basis === 'L2') {
+      var W0 = Array.apply(null, {length: N0}).map(Number.call, Number).map(function (a) {return div0 * a}).map(L2);
+      var W1 = Array.apply(null, {length: N1}).map(Number.call, Number).map(function (a) {return div1 * a}).map(L2);
+    }else if (basis === 'L3') {
+      var W0 = Array.apply(null, {length: N0}).map(Number.call, Number).map(function (a) {return div0 * a}).map(L3);
+      var W1 = Array.apply(null, {length: N1}).map(Number.call, Number).map(function (a) {return div1 * a}).map(L3);
+    }
     var weights = [];
     for (var j = 0; j < N1; j++) {
         for (var i = 0; i < N0; i++) {
