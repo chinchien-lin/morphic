@@ -2274,3 +2274,12 @@ class Mesh(object):
     def debug(self, msg):
         if self.debug_on:
             print(msg)
+
+    def export_json(self, element_ids='all', precision='%0.6f'):
+        node_ids, nodes_strs, elements_strs = self.export_json_strs(
+            element_ids, precision)
+        json = {
+            "nodes": nodes_strs,
+            "elements": elements_strs
+        }
+        return json
