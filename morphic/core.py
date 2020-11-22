@@ -22,17 +22,17 @@ def element_face_nodes(basis, node_ids):
     for base in basis:
         if base[0] == 'T':
             raise ValueError('Triangular basis are not supported')
-    if dims is 1:
+    if dims == 1:
         return None
-    elif dims is 2:
+    elif dims == 2:
         return node_ids
-    elif dims is 3:
+    elif dims == 3:
         shape = []
         for base in basis:
             if base[0] == 'L':
                 shape.append(int(base[1:]) + 1)
             elif base[0] == 'H':
-                if base[1:] is not '3':
+                if base[1:] != '3':
                     ValueError('Only 3rd-order hermites are supported')
                 shape.append(2)
             else:
@@ -55,7 +55,7 @@ def element_line_nodes(basis, node_ids):
     for base in basis:
         if base[0] == 'T':
             raise ValueError('Triangular basis are not supported')
-    if dims is 1:
+    if dims == 1:
         return node_ids
     elif dims in [2, 3]:
         shape = []
@@ -63,7 +63,7 @@ def element_line_nodes(basis, node_ids):
             if base[0] == 'L':
                 shape.append(int(base[1:]) + 1)
             elif base[0] == 'H':
-                if base[1:] is not '3':
+                if base[1:] != '3':
                     ValueError('Only 3rd-order hermites are supported')
                 shape.append(2)
             else:

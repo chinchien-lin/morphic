@@ -557,7 +557,7 @@ class Element(object):
 
     def evaluate(self, xi, deriv=None):
         if isinstance(xi, int) or isinstance(xi, float):
-            if self.shape is not 'line':
+            if self.shape != 'line':
                 raise Exception('Invalid xi to an element greater than 1d')
             xi = numpy.array([[xi]])
             return self.mesh._core.evaluate(self.cid, xi, deriv=deriv)[0]
@@ -566,7 +566,7 @@ class Element(object):
             if isinstance(xi, list):
                 xi = numpy.asarray(xi)
 
-            if self.shape is 'line':
+            if self.shape == 'line':
                 if len(xi.shape) == 1:
                     xi = numpy.array([xi]).T
                     if xi.shape[0] == 1:
