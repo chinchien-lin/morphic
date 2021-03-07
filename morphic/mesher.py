@@ -2253,33 +2253,42 @@ class Mesh(object):
 
         return pids, nodes_strs, elements_strs
 
-    def export(self, filepath, element_ids='all', simplify=True, precision='%0.6f', format='json'):
+    def export(
+            self, filepath=None, element_ids='all', precision='%0.6f',
+            export_format=None):
 
-        node_ids, nodes_strs, elements_strs = self.export_json_strs(element_ids, precision)
+        node_ids, nodes_strs, elements_strs = self.export_json_strs(
+            element_ids, precision)
 
-        fp = open(filepath, 'w')
+        if export_format == 'json':
+            json = \
+                '{\n' \
+                '"nodes": {\n' + \
+                ',\n'.join(nodes_strs) + \
+                '\n\t},\n' \
+                '"elements": {\n' + \
+                ',\n'.join(elements_strs) + \
+                '\n\t}\n' \
+                '}'
+            return json
+        else:
+            if filepath is None:
+                raise ValueError('Export filepath not specified.')
 
-        fp.write('{\n')
-        fp.write('"nodes": {\n')
-        fp.write(',\n'.join(nodes_strs))
-        fp.write('\n\t},\n')
+            fp = open(filepath, 'w')
 
-        fp.write('"elements": {\n')
-        fp.write(',\n'.join(elements_strs))
-        fp.write('\n\t}\n')
-        fp.write('}')
+            fp.write('{\n')
+            fp.write('"nodes": {\n')
+            fp.write(',\n'.join(nodes_strs))
+            fp.write('\n\t},\n')
 
-        fp.close()
+            fp.write('"elements": {\n')
+            fp.write(',\n'.join(elements_strs))
+            fp.write('\n\t}\n')
+            fp.write('}')
+
+            fp.close()
 
     def debug(self, msg):
         if self.debug_on:
             print(msg)
-
-    def export_json(self, element_ids='all', precision='%0.6f'):
-        node_ids, nodes_strs, elements_strs = self.export_json_strs(
-            element_ids, precision)
-        json = {
-            "nodes": nodes_strs,
-            "elements": elements_strs
-        }
-        return json
