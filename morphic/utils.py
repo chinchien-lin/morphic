@@ -124,18 +124,33 @@ def element_dimensions(basis):
             dimensions += 1
     return dimensions
 
-def convert_hermite_lagrange(cHmesh, tol=1e-9):
+def convert_hermite_lagrange(cHmesh, tol=1e-9, interpolation="cubicLagrange"):
     if isinstance(cHmesh, str):
         cHmesh = morphic.Mesh(cHmesh)
-    
-    Xi3d = numpy.mgrid[0:4, 0:4, 0:4] * (1./3.)
-    Xi3d = numpy.array([Xi3d[2, :, :].flatten(),
-            Xi3d[1, :, :].flatten(), Xi3d[0, :, :].flatten()]).T
-    Xi2d = numpy.mgrid[0:4, 0:4] * (1./3.)
-    Xi2d = numpy.array([Xi2d[1, :].flatten(), Xi2d[0, :].flatten()]).T
-    Xi1d = numpy.mgrid[0:4] * (1./3.)
-    Xi1d = Xi1d.flatten().T
-    
+
+    if interpolation == "cubicLagrange":
+        Xi3d = numpy.mgrid[0:4, 0:4, 0:4] * (1./3.)
+        Xi3d = numpy.array([Xi3d[2, :, :].flatten(),
+                Xi3d[1, :, :].flatten(), Xi3d[0, :, :].flatten()]).T
+        Xi2d = numpy.mgrid[0:4, 0:4] * (1./3.)
+        Xi2d = numpy.array([Xi2d[1, :].flatten(), Xi2d[0, :].flatten()]).T
+        Xi1d = numpy.mgrid[0:4] * (1./3.)
+        Xi1d = Xi1d.flatten().T
+
+        morphic_basis = 'L3'
+
+    elif interpolation == "quadraticLagrange":
+        Xi3d = numpy.mgrid[0:3, 0:3, 0:3] * (1. / 2.)
+        Xi3d = numpy.array([Xi3d[2, :, :].flatten(),
+                            Xi3d[1, :, :].flatten(),
+                            Xi3d[0, :, :].flatten()]).T
+        Xi2d = numpy.mgrid[0:3, 0:3] * (1. / 2.)
+        Xi2d = numpy.array([Xi2d[1, :].flatten(), Xi2d[0, :].flatten()]).T
+        Xi1d = numpy.mgrid[0:3] * (1. / 2.)
+        Xi1d = Xi1d.flatten().T
+
+        morphic_basis = 'L2'
+
     X = []
     
     mesh = morphic.Mesh() # lagrange mesh
@@ -168,7 +183,7 @@ def convert_hermite_lagrange(cHmesh, tol=1e-9):
                 else:
                     element_nodes.append(index + 1)
             eid += 1
-            mesh.add_element(eid, ['L3'], element_nodes)
+            mesh.add_element(eid, [morphic_basis], element_nodes)
         elif dims == 2:
             print("2D element conversion unchecked")
             Xg = element.evaluate(Xi2d)
@@ -182,7 +197,7 @@ def convert_hermite_lagrange(cHmesh, tol=1e-9):
                 else:
                     element_nodes.append(index + 1)
             eid += 1
-            mesh.add_element(eid, ['L3', 'L3'], element_nodes)
+            mesh.add_element(eid, [morphic_basis, morphic_basis], element_nodes)
         elif dims == 3:
             Xg = element.evaluate(Xi3d)
             for xg in Xg:
@@ -195,9 +210,12 @@ def convert_hermite_lagrange(cHmesh, tol=1e-9):
                 else:
                     element_nodes.append(index + 1)
             eid += 1
-            mesh.add_element(eid, ['L3', 'L3', 'L3'], element_nodes)
+            mesh.add_element(
+                eid, [morphic_basis, morphic_basis, morphic_basis],
+                element_nodes)
         else:
-            raise ValueError('Element conversion: element dimension not supported')
+            raise ValueError(
+                'Element conversion: element dimension not supported')
     
     mesh.generate()
     
