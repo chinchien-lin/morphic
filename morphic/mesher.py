@@ -1778,7 +1778,10 @@ class Mesh(object):
         self.generate()
         if nodes != None:
             if not isinstance(nodes, list):
-                nodes = [nodes]
+                try:
+                    nodes = [*nodes]
+                except:
+                    nodes = [nodes]
             nodes = self.nodes[nodes]
         else:
             nodes = self.nodes(group)
