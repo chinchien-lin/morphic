@@ -1804,7 +1804,7 @@ class Mesh(object):
             else:
                 node.values[:, 0] = values[idx, :]
 
-    def get_node_ids(self, nodes=None, group=b'_default'):
+    def get_node_ids(self, nodes=None, group='_default'):
         self.generate()
         if nodes != None:
             if not isinstance(nodes, list):
